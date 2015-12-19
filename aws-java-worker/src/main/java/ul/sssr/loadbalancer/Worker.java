@@ -12,6 +12,7 @@ import com.amazonaws.services.sqs.AmazonSQSClient;
 import com.amazonaws.services.sqs.model.DeleteMessageRequest;
 import com.amazonaws.services.sqs.model.GetQueueUrlResult;
 import com.amazonaws.services.sqs.model.Message;
+import com.amazonaws.services.sqs.model.QueueDoesNotExistException;
 import com.amazonaws.services.sqs.model.ReceiveMessageRequest;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 
@@ -64,12 +65,18 @@ public class Worker {
 
 				// Récupération queue response k
 
-				String myResponseUrl = sqs.getQueueUrl("arif-QResponse-" + k)
-						.getQueueUrl();
-				while (myResponseUrl == null) {
-					myResponseUrl = sqs.getQueueUrl("arif-QResponse-" + k)
-							.getQueueUrl();
+				String myResponseUrl = "";
+				boolean notCreateQ = true;
+				while (notCreateQ) {
+					try {
+						myResponseUrl = sqs.getQueueUrl("arif-QResponse-" + k)
+								.getQueueUrl();
+						notCreateQ = false;
+					} catch (QueueDoesNotExistException e) {
+						// TODO: handle exception
+					}
 				}
+
 				// calcul fib
 
 				int val = fib(n);
