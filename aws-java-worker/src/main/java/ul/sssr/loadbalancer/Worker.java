@@ -66,7 +66,7 @@ public class Worker {
 
 				String myResponseUrl = sqs.getQueueUrl("arif-QResponse-" + k)
 						.getQueueUrl();
-				while (myResponseUrl != null) {
+				while (myResponseUrl == null) {
 					myResponseUrl = sqs.getQueueUrl("arif-QResponse-" + k)
 							.getQueueUrl();
 				}
