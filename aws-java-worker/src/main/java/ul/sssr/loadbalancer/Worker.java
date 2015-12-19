@@ -19,13 +19,13 @@ public class Worker {
 
 	public static void main(String[] args) throws InterruptedException {
 		// TODO Auto-generated method stub
-		
+
 		/*
 		 * The ProfileCredentialsProvider will return your [default] credential
 		 * profile by reading from the credentials file located at
 		 * (~/.aws/credentials).
 		 */
-		
+
 		AWSCredentials credentials = null;
 		try {
 			credentials = new ProfileCredentialsProvider().getCredentials();
@@ -40,9 +40,9 @@ public class Worker {
 		AmazonSQS sqs = new AmazonSQSClient(credentials);
 		Region euCentral1 = Region.getRegion(Regions.EU_CENTRAL_1);
 		sqs.setRegion(euCentral1);
-		
+
 		String myQRequestUrl = sqs.getQueueUrl("arif-QRequest").getQueueUrl();
-		
+
 		while (true) {
 			List<Message> msgs = sqs.receiveMessage(
 					new ReceiveMessageRequest(myQRequestUrl)
@@ -51,33 +51,32 @@ public class Worker {
 			if (msgs.size() > 0) {
 				Message message = msgs.get(0);
 				String data = message.getBody();
-				System.out.println("Le message est " +data );
-				
+				System.out.println("Le message est " + data);
+
 				// split le message et récupèrer la val et k
-				
+
 				String[] valAndK = data.split(" ");
 				int n = Integer.parseInt(valAndK[0]);
 				int k = Integer.parseInt(valAndK[1]);
 
-				System.out.println("On a n = "+n);
-				System.out.println("On a k = "+k);
+				System.out.println("On a n = " + n);
+				System.out.println("On a k = " + k);
 				// Récupération queue response k
 
-				String myResponseUrl = "";
-				while(sqs.getQueueUrl("arif-QResponse-" + k) == null){
-					myResponseUrl = sqs.getQueueUrl("arif-QResponse-" + k)
+				String myResponseUrl = sqs.getQueueUrl("arif-QResponse-" + k)
 						.getQueueUrl();
-					System.out.println("Blabalabaab "+sqs.getQueueUrl("arif-QResponse-" + k));
-				}
+				System.out.println("Blabalabaab "
+						+ sqs.getQueueUrl("arif-QResponse-" + k));
 				// calcul fib
-				
+
 				int val = fib(n);
 
-				System.out.println("Le résultat dans le worker est "+val);
+				System.out.println("Le résultat dans le worker est " + val);
 				// Send a message
 				sqs.sendMessage(new SendMessageRequest(myResponseUrl, "" + val));
-				
-				sqs.deleteMessage(new DeleteMessageRequest(myQRequestUrl,message.getReceiptHandle()));
+
+				sqs.deleteMessage(new DeleteMessageRequest(myQRequestUrl,
+						message.getReceiptHandle()));
 			}
 		}
 	}
