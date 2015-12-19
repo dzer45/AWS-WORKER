@@ -51,7 +51,7 @@ public class Worker {
 			if (msgs.size() > 0) {
 				Message message = msgs.get(0);
 				String data = message.getBody();
-				System.out.println("The message is " +data );
+				System.out.println("Le message est " +data );
 				
 				// split le message et récupèrer la val et k
 				
@@ -59,8 +59,8 @@ public class Worker {
 				int n = Integer.parseInt(valAndK[0]);
 				int k = Integer.parseInt(valAndK[1]);
 
-				System.out.println("n= "+n);
-				System.out.println("k= "+k);
+				System.out.println("On a n = "+n);
+				System.out.println("On a k = "+k);
 				// Récupération queue response k
 
 				String myResponseUrl = sqs.getQueueUrl("arif-QResponse-" + k)
@@ -70,7 +70,7 @@ public class Worker {
 				
 				int val = fib(n);
 
-				System.out.println(""+val);
+				System.out.println("Le résultat dans le worker est "+val);
 				// Send a message
 				sqs.sendMessage(new SendMessageRequest(myResponseUrl, "" + val));
 				
