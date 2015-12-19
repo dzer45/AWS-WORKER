@@ -67,7 +67,7 @@ public class Worker {
 				while(sqs.getQueueUrl("arif-QResponse-" + k) == null){
 					myResponseUrl = sqs.getQueueUrl("arif-QResponse-" + k)
 						.getQueueUrl();
-					System.out.println(""+sqs.getQueueUrl("arif-QResponse-" + k));
+					System.out.println("Blabalabaab "+sqs.getQueueUrl("arif-QResponse-" + k));
 				}
 				// calcul fib
 				
