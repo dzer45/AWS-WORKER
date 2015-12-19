@@ -63,9 +63,10 @@ public class Worker {
 				System.out.println("On a k = "+k);
 				// Récupération queue response k
 
+				
 				String myResponseUrl = sqs.getQueueUrl("arif-QResponse-" + k)
 						.getQueueUrl();
-				
+				System.out.println(myResponseUrl);
 				// calcul fib
 				
 				int val = fib(n);
