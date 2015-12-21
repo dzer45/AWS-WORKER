@@ -1,0 +1,4 @@
+#! /bin/bash
+cd /home/ec2-user/AWS-WORKER/aws-java-worker/
+sudo rm -r target/
+mvn clean compile exec:java
